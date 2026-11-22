@@ -1,0 +1,83 @@
+# encoding: utf-8
+# 2024 R1
+SetScriptVersion(Version="24.1.144")
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.SetFile(FilePath="G:/2026_torpedo_chassis_assembly_ansys.STEP")
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+model1.Exit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.CreateMaterial(Name="AISI 4030")
+favorites1 = EngData.LoadFavoriteItems()
+library1 = EngData.OpenLibrary(
+    Name="ANSYS GRANTA Materials Data for Simulation (Sample)",
+    Source="Granta_Design_Typical_Materials.xml")
+matl1.DisplayName = "AISI 40341300"
+matlProp1 = matl1.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+matlProp1.SetData(
+    Index=-1,
+    Variables=["Young's Modulus"],
+    Values=[["210 [Pa]"]])
+matlProp1.SetVariableProperty(
+    VariableName="Young's Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp1.SetData(
+    Variables=["Young's Modulus"],
+    Values=[["2.1E-07 [GPa]"]])
+matlProp1.SetData(
+    Variables=["Young's Modulus"],
+    Values=[["210 [GPa]"]])
+matlProp1.SetData(
+    Variables=["Poisson's Ratio"],
+    Values=[["0.3"]])
+EngData.EnableFilter(Enable=False)
+EngData.EnableFilter()
+EngData.EnableFilter(Enable=False)
+matlProp2 = matl1.CreateProperty(
+    Name="Tensile Yield Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp3 = matl1.CreateProperty(
+    Name="Tensile Ultimate Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp2.SetData(
+    Index=-1,
+    Variables=["Tensile Yield Strength"],
+    Values=[["350 [Pa]"]])
+matlProp2.SetVariableProperty(
+    VariableName="Tensile Yield Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp2.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["0.00035 [MPa]"]])
+matlProp2.SetData(
+    Variables=["Tensile Yield Strength"],
+    Values=[["350 [MPa]"]])
+matlProp3.SetData(
+    Index=-1,
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["560 [Pa]"]])
+matlProp3.SetVariableProperty(
+    VariableName="Tensile Ultimate Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp3.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["0.00056 [MPa]"]])
+matlProp3.SetData(
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["560 [MPa]"]])
+modelComponent1.Refresh()
+model1.Edit()
+model1.Exit()
+Save(Overwrite=True)
